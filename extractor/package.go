@@ -34,7 +34,7 @@ func processPackage(root, pkgName string) (int64, error) {
 		return 0, nil
 	}
 
-  var packageComplexity int64 = 0
+	var packageComplexity int64 = 0
 
 	// analyze each file in package, merge results
 	for _, file := range pkg.GoFiles {

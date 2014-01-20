@@ -19,9 +19,9 @@ func FileImportCalls(file string, pkg *build.Package) (int64, error) {
 }
 
 type visitor struct {
-	fileAst     *ast.File
-	fset        *token.FileSet
-  Complexity  int64
+	fileAst    *ast.File
+	fset       *token.FileSet
+	Complexity int64
 }
 
 func newVisitor(file string, pkg *build.Package) (*visitor, error) {
@@ -33,7 +33,7 @@ func newVisitor(file string, pkg *build.Package) (*visitor, error) {
 	}
 
 	v := visitor{
-    Complexity: 1,
+		Complexity: 1,
 		fileAst:    fileAst,
 	}
 
@@ -46,14 +46,20 @@ func (v *visitor) walk() *visitor {
 }
 
 func (v *visitor) Visit(node ast.Node) (w ast.Visitor) {
-  switch node.(type) {
-  case *ast.IfStmt: v.Complexity++
-  case *ast.ForStmt: v.Complexity++
-  case *ast.RangeStmt: v.Complexity++
-  case *ast.BranchStmt: v.Complexity++
-  case *ast.SwitchStmt: v.Complexity++
-  case *ast.TypeSwitchStmt: v.Complexity++
-  }
+	switch node.(type) {
+	case *ast.IfStmt:
+		v.Complexity++
+	case *ast.ForStmt:
+		v.Complexity++
+	case *ast.RangeStmt:
+		v.Complexity++
+	case *ast.BranchStmt:
+		v.Complexity++
+	case *ast.SwitchStmt:
+		v.Complexity++
+	case *ast.TypeSwitchStmt:
+		v.Complexity++
+	}
 
 	return v
 }

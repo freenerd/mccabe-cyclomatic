@@ -2,14 +2,14 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/freenerd/mccabe-cyclomatic/extractor"
 	"log"
-  "fmt"
 )
 
 var (
-	file     = flag.String("f", "", "a go source file to extract calls from")
-	pkg      = flag.String("p", "", "a go package")
+	file = flag.String("f", "", "a go source file to extract calls from")
+	pkg  = flag.String("p", "", "a go package")
 )
 
 func main() {
@@ -21,7 +21,7 @@ func main() {
 		return
 	}
 
-  var complexity int64
+	var complexity int64
 	var err error
 
 	if *file != "" {
@@ -34,5 +34,5 @@ func main() {
 		return
 	}
 
-  fmt.Println(complexity)
+	fmt.Println(complexity)
 }
