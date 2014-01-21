@@ -45,19 +45,23 @@ func (v *visitor) walk() *visitor {
 }
 
 func (v *visitor) Visit(node ast.Node) (w ast.Visitor) {
-	switch node.(type) {
+	switch node := node.(type) {
 	case *ast.IfStmt:
 		v.Complexity++
 	case *ast.ForStmt:
 		v.Complexity++
 	case *ast.RangeStmt:
 		v.Complexity++
-	case *ast.BranchStmt:
-		v.Complexity++
-	case *ast.SwitchStmt:
-		v.Complexity++
-	case *ast.TypeSwitchStmt:
-		v.Complexity++
+	case *ast.CaseClause:
+		if node.List != nil {
+			// is a 'case' clause, but not 'default'
+			v.Complexity++
+		}
+	case *ast.CommClause:
+		if node.Comm != nil {
+			// is a 'case' clause, but not 'default'
+			v.Complexity++
+		}
 	}
 
 	return v

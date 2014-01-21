@@ -41,8 +41,8 @@ These can be mapped to certain [Go ast node types](http://golang.org/pkg/go/ast/
 
 - **if** is of [IfStmt](http://golang.org/pkg/go/ast/#IfStmt) type. An *else if* is of [IfStmt](http://golang.org/pkg/go/ast/#IfStmt) type as well. An *else* clause does not add cyclomatic complexity.
 - **for** is either of [ForStmt](http://golang.org/pkg/go/ast/#ForStmt) type or of [RangeStmt](http://golang.org/pkg/go/ast/#RangeStmt) type.
-- **switch** might either be an expression switch or a type switch. In both cases, the number of code execution branches to be executed is determined by the number of case statements [CaseClause](http://golang.org/pkg/go/ast/#CaseClause). Therefore, we only count each [CaseClause](http://golang.org/pkg/go/ast/#CaseClause).
-- **select** is similar to *switch*, in that it's code execution branches are determined by the number of case statements [CaseClause](http://golang.org/pkg/go/ast/#CaseClause).
+- **switch** might either be an expression switch or a type switch. In both cases, the number of code execution branches to be executed is determined by the number of case statements [CaseClause](http://golang.org/pkg/go/ast/#CaseClause). Therefore, we only count each [CaseClause](http://golang.org/pkg/go/ast/#CaseClause). *default* clauses do not add to cyclomatic complexity.
+- **select** is similar to *switch*, in that its code execution branches are determined by the number of case statements, but of type [CommClause](http://golang.org/pkg/go/ast/#CommClause). *default* clauses do not add to cyclomatic complexity.
 
 We end up with the list of the following ast node types, that determine a new code execution branch:
 
@@ -50,6 +50,7 @@ We end up with the list of the following ast node types, that determine a new co
 - [ForStmt](http://golang.org/pkg/go/ast/#ForStmt)
 - [RangeStmt](http://golang.org/pkg/go/ast/#RangeStmt)
 - [CaseClause](http://golang.org/pkg/go/ast/#CaseClause)
+- [CommClause](http://golang.org/pkg/go/ast/#CommClause)
 
 When any of these node types is encounterd, the complexity score is increased by 1.
 
