@@ -25,9 +25,9 @@ func main() {
 	var err error
 
 	if *file != "" {
-		complexity, err = extractor.FileImportCalls(*file, nil)
+		complexity, err = extractor.FileComplexity(*file)
 	} else if *pkg != "" {
-		complexity, err = extractor.PackageImportCalls(*pkg)
+		complexity, err = extractor.PackageComplexity(*pkg)
 	}
 	if err != nil {
 		log.Fatal(err)

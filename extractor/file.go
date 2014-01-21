@@ -2,15 +2,14 @@ package extractor
 
 import (
 	"go/ast"
-	"go/build"
 	"go/parser"
 	"go/token"
 )
 
-func FileImportCalls(file string, pkg *build.Package) (int64, error) {
-	v, err := newVisitor(file, pkg)
+func FileComplexity(file string) (int64, error) {
+	v, err := newVisitor(file)
 	if err != nil {
-		return 0, err
+		return -1, err
 	}
 
 	v.walk()
@@ -24,7 +23,7 @@ type visitor struct {
 	Complexity int64
 }
 
-func newVisitor(file string, pkg *build.Package) (*visitor, error) {
+func newVisitor(file string) (*visitor, error) {
 	fset := token.NewFileSet()
 	fileAst, err := parser.ParseFile(fset, file, nil, parser.ParseComments)
 

@@ -7,7 +7,7 @@ import (
 	"path"
 )
 
-func PackageImportCalls(pkgName string) (int64, error) {
+func PackageComplexity(pkgName string) (int64, error) {
 	cwd, err := os.Getwd()
 	if err != nil {
 		return -1, fmt.Errorf("failed to get working dir: %s", err)
@@ -29,16 +29,11 @@ func processPackage(root, pkgName string) (int64, error) {
 		return -1, fmt.Errorf("failed to import package %s: %s", pkgName, err)
 	}
 
-	// Don't worry about dependencies for stdlib packages
-	if pkg.Goroot {
-		return 0, nil
-	}
-
 	var packageComplexity int64 = 0
 
 	// analyze each file in package, merge results
 	for _, file := range pkg.GoFiles {
-		fileComplexity, err := FileImportCalls(path.Join(pkg.Dir, file), pkg)
+		fileComplexity, err := FileComplexity(path.Join(pkg.Dir, file))
 		if err != nil {
 			return -1, fmt.Errorf("failed in file %s: %s", file, err)
 		}
