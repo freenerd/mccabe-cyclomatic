@@ -69,3 +69,5 @@ A Complexity Measure, by Thomas J McCabe. 1976
 http://www.win.tue.nl/~aserebre/2IS55/2010-2011/10.pdf
 
 https://en.wikipedia.org/wiki/Cyclomatic_complexity
+
+https://github.com/philbooth/escomplex
