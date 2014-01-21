@@ -24,27 +24,41 @@ To get the cyclomatic complexity of a package:
 
 The output is the cyclomatic complexity number.
 
-## Formula
+## Calculation
 
-complexity = number of code branches + 1
+`complexity = number of code execution branch statements + 1`
 
-The following [go ast types](http://golang.org/pkg/go/ast/) are recognized as code branches:
+The file to be analyzed is loaded with [go/parser ParseFile](http://golang.org/pkg/go/parser/#ParseFile) and subsequentially walked with a [go/ast Visitor](http://golang.org/pkg/go/ast/#Visitor). Depending on which ast node types are encountered, the complexity count is increased.
 
-- IfStmt (also catches `else if`)
-- for:
-  - ForStmt
-  - RangeStmt
-  - BranchStmt
-- switch:
-  - SwitchStmt
-  - TypeSwitchStmt
+[Effective Go](http://golang.org/doc/effective_go.html#control-structures) describes the following code execution branch statements:
 
-Whenever the ast walker hits one of these nodes, it increases the complexity counter by one.
+- if
+- for
+- switch
+- select
+
+These can be mapped to certain [Go ast node types](http://golang.org/pkg/go/ast/):
+
+- **if** is of [IfStmt](http://golang.org/pkg/go/ast/#IfStmt) type. An *else if* is of [IfStmt](http://golang.org/pkg/go/ast/#IfStmt) type as well. An *else* clause does not add cyclomatic complexity.
+- **for** is either of [ForStmt](http://golang.org/pkg/go/ast/#ForStmt) type or of [RangeStmt](http://golang.org/pkg/go/ast/#RangeStmt) type.
+- **switch** might either be an expression switch or a type switch. In both cases, the number of code execution branches to be executed is determined by the number of case statements [CaseClause](http://golang.org/pkg/go/ast/#CaseClause). Therefore, we only count each [CaseClause](http://golang.org/pkg/go/ast/#CaseClause).
+- **select** is similar to *switch*, in that it's code execution branches are determined by the number of case statements [CaseClause](http://golang.org/pkg/go/ast/#CaseClause).
+
+We end up with the list of the following ast node types, that determine a new code execution branch:
+
+- [IfStmt](http://golang.org/pkg/go/ast/#IfStmt)
+- [ForStmt](http://golang.org/pkg/go/ast/#ForStmt)
+- [RangeStmt](http://golang.org/pkg/go/ast/#RangeStmt)
+- [CaseClause](http://golang.org/pkg/go/ast/#CaseClause)
+
+When any of these node types is encounterd, the complexity score is increased by 1.
+
+Apart from the ones just listed, the go language specification includes more [control execution statements]((http://golang.org/ref/spec#Statements). These have not been recognized here: it is assumed that they do not add additional cyclomatic complexity, since they do not add a new code execution branch.
 
 ## Limitations
 
-- Switch and TypeSwitch statement might lead to n case branches. These are currently not counted, but it is implicitely assumed that they only have 2 instead of n case branches.
-- The package algorithm is not recursive, it will not recognize sub-packages.
+- complexity numbers are only returned for whole packages or files, but not for individual functions.
+- the package algorithm is not recursive, it will not recognize sub-packages.
 
 ## References
 
