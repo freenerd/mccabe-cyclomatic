@@ -1,3 +1,5 @@
+**Note** This tool is likely doing it wrong. Check out [this conversation](https://groups.google.com/forum/#!topic/golang-nuts/8SB9H1D34qk) on the goloang-nuts mailinglist and checkout [gocyclo](https://github.com/fzipp/gocyclo).
+
 # mccabe-cyclomatic
 
 Calculates Thomas McCabe's cyclomatic complexity for a go file or package
